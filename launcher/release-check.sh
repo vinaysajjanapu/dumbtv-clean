@@ -8,7 +8,7 @@
 #   ./launcher/release-check.sh --manifest only launcher/version.env (used by CI)
 set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
-REPO=https://github.com/humblemuzzu/dumbtv
+REPO=https://github.com/vinaysajjanapu/dumbtv-clean
 
 mode=${1:-all}
 case $mode in
