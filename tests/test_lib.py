@@ -123,20 +123,20 @@ class FallbackDnsTest(unittest.TestCase):
 
 class FrontActivityTest(unittest.TestCase):
     DUMPS = {
-        "fire os 6": "  Stack #1:\n    mResumedActivity: ActivityRecord{2b u0 tv.dumbtv.home/.Home t12}\n",
-        "fire os 7": ("    mResumedActivity: ActivityRecord{772d87b u0 tv.dumbtv.home/.Home t1954}\n"
-                      "  ResumedActivity: ActivityRecord{772d87b u0 tv.dumbtv.home/.Home t1954}\n"),
-        "android 13": "  * Task{a #9}\n      topResumedActivity=ActivityRecord{9 u0 tv.dumbtv.home/.Home t9}\n",
+        "fire os 6": "  Stack #1:\n    mResumedActivity: ActivityRecord{2b u0 tv.vinay.dumbtv/.Home t12}\n",
+        "fire os 7": ("    mResumedActivity: ActivityRecord{772d87b u0 tv.vinay.dumbtv/.Home t1954}\n"
+                      "  ResumedActivity: ActivityRecord{772d87b u0 tv.vinay.dumbtv/.Home t1954}\n"),
+        "android 13": "  * Task{a #9}\n      topResumedActivity=ActivityRecord{9 u0 tv.vinay.dumbtv/.Home t9}\n",
         "android 14": ("  * Task{aad0114 #106 type=standard A=10129:com.amazon.screensaver U=0}\n"
                        "    topResumedActivity=ActivityRecord{22a6f67 u0 com.amazon.screensaver/.MainActivity t106}\n"
                        "  * Task{b #2 type=home}\n"
-                       "      topResumedActivity=ActivityRecord{3 u0 tv.dumbtv.home/.Home t2}\n"
+                       "      topResumedActivity=ActivityRecord{3 u0 tv.vinay.dumbtv/.Home t2}\n"
                        "  ResumedActivity: ActivityRecord{22a6f67 u0 com.amazon.screensaver/.MainActivity t106}\n"),
     }
     WANT = {
-        "fire os 6": "tv.dumbtv.home/.Home",
-        "fire os 7": "tv.dumbtv.home/.Home",
-        "android 13": "tv.dumbtv.home/.Home",
+        "fire os 6": "tv.vinay.dumbtv/.Home",
+        "fire os 7": "tv.vinay.dumbtv/.Home",
+        "android 13": "tv.vinay.dumbtv/.Home",
         "android 14": "com.amazon.screensaver/.MainActivity",
     }
 

@@ -27,10 +27,10 @@ network rules, puts back the settings your TV had before (saved by
 asked to have uninstalled come back from the Appstore.
 
 **Does the project itself phone home?**
-No. On your computer the scripts download the personalDNSfilter app from F-Droid,
-dumbtv home from this repository's releases (checked against a pinned SHA-256),
-and the HaGeZi tracker list; SmartTube too, if you ask for it. Nothing is
-uploaded. The launcher has no internet permission.
+No. On your computer the scripts download the personalDNSfilter app from F-Droid
+and the HaGeZi tracker list; SmartTube too, if you ask for it. dumbtv home is
+built from this tree. Nothing is uploaded. The launcher's only network use is
+fetching a wallpaper you asked for.
 
 ## Your apps
 
@@ -58,7 +58,8 @@ servers blocked; the buttons and pairing keep working. To bring it back:
 ```
 
 **Will the Appstore work?**
-Yes. Its hosts are never blocked.
+Yes. Its hosts are never blocked. Opening it from dumbtv home steps aside, because
+the store is drawn by Amazon's home. Open any other app, then press Home.
 
 ## Day to day
 
@@ -105,17 +106,18 @@ the rest of the cleanup: the packages, the settings and the home screen.
 ## The project
 
 **Why its own launcher?**
-A home screen needs no internet access, no advertising ID and no permission to
-install apps. dumbtv home is 54 KB, open source and asks for no permissions on
-Fire OS 7 and 8. Check it yourself: `aapt2 dump permissions dumbtv-home.apk`
-lists three, each limited to Android 8.1 and earlier, which only Fire OS 6's Keeper
-uses.
+A home screen needs no advertising ID and no permission to install apps. This
+one is plain Java. On Fire OS 7 and 8 the only permission is internet, and that
+is for a wallpaper you asked for. Fire OS 6 also gets three permissions for its
+home-button keeper, each limited to Android 8.1. Check it yourself:
+`aapt2 dump permissions dumbtv-home.apk`.
 
 **Who made this?**
+Dumb TV Clean is by [Vinay Sajjanapu](https://github.com/vinaysajjanapu).
+[dumbtv](https://github.com/humblemuzzu/dumbtv) was started by
 [Muzzammil](https://x.com/DevMuzzammil), with people who ran it on their own TVs
-and sent fixes and device reports. They are credited in the
-[README](../README.md#thanks).
+and sent fixes and device reports.
 
 **Can someone set it up for me?**
-Yes. Tell us which TV you have at [dumbtv.org/help](https://dumbtv.org/help) and we
-will reply by email.
+Open an issue on [this repository](https://github.com/vinaysajjanapu/dumbtv-clean/issues)
+and say which TV you have.

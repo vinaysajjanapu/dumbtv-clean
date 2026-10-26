@@ -28,15 +28,13 @@ rest:
 - your GitHub username, so the report credits you
 
 It writes `catalog/devices/<platform>-<brand>-<model>.yaml`, validates it and prints
-the `git` and `gh` commands for the pull request. Once merged, the report appears
-on [dumbtv.org/tv](https://dumbtv.org/tv) within a day. For unattended runs every answer
+the `git` and `gh` commands for the pull request. For unattended runs every answer
 has a flag: `--brand`, `--model`, `--platform`, `--status`, `--developer-mode`,
 `--ip-location`, `--prompt "name|fix"`, `--quirk "text"`, `--models "A,B"`,
 `--notes "text"`, `--github handle`, `--no-device`, `--dry-run`.
 
-**From a browser**, with no git: open an issue with the
-[Device report](https://github.com/humblemuzzu/dumbtv/issues/new?template=device-report.yml)
-template.
+**From a browser**, with no git: open an issue on
+[this repository](https://github.com/vinaysajjanapu/dumbtv-clean/issues).
 
 What makes a good report:
 
@@ -61,8 +59,9 @@ The rules the code keeps, and that a change must keep too:
   touched.
 - Amazon packages are disabled, never uninstalled.
 - No app a person uses is removed unless they named it.
-- The launcher asks for no permissions on Fire OS 7 and 8 and has no internet
-  access. CI enforces this.
+- On Fire OS 7 and 8 the launcher's only permission is `INTERNET`, for a wallpaper
+  the owner asked for. Fire OS 6's three keeper permissions stay capped at
+  Android 8.1. CI enforces this.
 - Every step can be undone with `scripts/restore.sh`.
 
 Test on a real TV, say which one and which build in the pull request, and run the

@@ -88,7 +88,7 @@ people take them.
 |---|---|---|---|
 | 1 | "Do you watch Prime Video?" No blocks the servers it needs. | yes | `--prime 0\|1` |
 | 2 | "Do you use Alexa or the voice button on the remote?" No switches off Alexa and the app that owns the microphone. | keep | `--alexa 0\|1` |
-| 3 | "Replace Amazon's home screen with dumbtv home?" Open source, apps and inputs only, no ads, no internet access. | yes | `--launcher 0\|1` |
+| 3 | "Replace Amazon's home screen with Dumb TV Clean?" Open source, apps and inputs only, no ads. Wallpaper search is the only network use. | yes | `--launcher 0\|1` |
 | 4 | "Run the DNS filter on the TV?" It is what stops telemetry and automatic updates. Without it, the protected Amazon packages keep reporting. | yes | `--dnsfilter 0\|1` |
 | 5 | "Are there apps you want removed?" Get names, map them to packages with `data/apps.txt` and `adb shell pm list packages -3`, and read the list back before recording it. | none | `--remove "pkg pkg"` |
 | 6 | "Do you want the YouTube app replaced with SmartTube?" No ads and no Shorts, a different app, same Google account. Ask once; if no, drop it. | no | `--youtube 0\|1` |
@@ -151,7 +151,7 @@ and changes nothing.
 ```
 ok         softwareupdates.amazon.com   blocked
 ok         www.youtube.com              resolves
-ok home bound, front is tv.dumbtv.home/.Home
+ok home bound, front is tv.vinay.dumbtv/.Home
 packages 51 disabled
 ok filter 416 entries
 ok vpn dnsfilter.android

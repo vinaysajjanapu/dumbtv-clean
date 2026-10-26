@@ -1,4 +1,4 @@
-package tv.dumbtv.home;
+package tv.vinay.dumbtv;
 
 /** Small host-side checks for the pixel path, without a device or test framework. */
 public final class FocusColorTest {
@@ -23,10 +23,17 @@ public final class FocusColorTest {
         check((color & 255) > (color >> 16 & 255), "blue stays blue");
         check((FocusColor.tint(color) >>> 24) == 61, "tint is 24 percent opaque");
         check((FocusColor.tint(color) & 0xFFFFFF) == (color & 0xFFFFFF), "tint keeps color");
-        check("black".equals(Config.BACKGROUND.fallback), "default background unchanged");
+        check("service".equals(Config.BACKGROUND.fallback), "default background is the wallpaper service");
+        check("custom".equals(Config.PROVIDER.fallback), "search query is the wallpaper source");
         check("Adaptive wallpaper tint".equals(Config.BACKGROUND.name("adaptive-tint")),
-                "tint is an Options choice");
+                "older background names still parse");
         check("Amber".equals(Config.ACCENT.name("amber")), "amber accent unchanged");
+        check(Config.BLUE == 0xFF3D8BFF, "blue accent unchanged");
+        check("Never".equals(Config.LABELS.name("never")), "app names can be hidden");
+        check("Off".equals(Config.LOCK.name("off")), "child lock starts off");
+        check("on".equals(Config.AUTO.fallback), "new apps join the home row");
+        check("On".equals(Config.AUTO.name("on")) && "Off".equals(Config.AUTO.name("off")),
+                "new apps is on or off");
         System.out.println("FocusColorTest passed");
     }
 }

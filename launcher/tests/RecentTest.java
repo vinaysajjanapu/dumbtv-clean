@@ -1,4 +1,4 @@
-package tv.dumbtv.home;
+package tv.vinay.dumbtv;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Host-side checks for App order › Recently used, without a device or test framework. */
+/** Host-side checks for last-used ordering, without a device or test framework. */
 public final class RecentTest {
     private static void check(boolean ok, String name) {
         if (!ok) throw new AssertionError(name);
@@ -28,10 +28,9 @@ public final class RecentTest {
         List<String> none = new ArrayList<>(Arrays.asList("b", "a", "c"));
         Collections.sort(none, (a, b) -> Recent.compare(new HashMap<>(), a, b));
         check(none.equals(Arrays.asList("b", "a", "c")), "no history leaves the order alone");
-
-        check("custom".equals(Config.ORDER.fallback), "default order unchanged");
-        check("Recently used".equals(Config.ORDER.name("recent")), "recent is an Options choice");
-        check(Arrays.asList(Config.CHOICES).contains(Config.ORDER), "App order shows in Options");
+        check("custom".equals(Config.ORDER.fallback), "default order is the saved order");
+        check("Alphabetical".equals(Config.ORDER.name("alpha")), "alphabetical is an order");
+        check("Recently Used".equals(Config.ORDER.name("recent")), "recent is an order");
         System.out.println("RecentTest passed");
     }
 }

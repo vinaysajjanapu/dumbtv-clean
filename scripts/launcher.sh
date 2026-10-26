@@ -15,24 +15,24 @@ if [[ $LAUNCHER == 0 ]]; then
   exit 0
 fi
 
-PKG=tv.dumbtv.home
+PKG=tv.vinay.dumbtv
 
 step "plan"
-note "install dumbtv home: open source, 54 KB, no internet permission, no ad ID"
-note "the prebuilt APK comes from this repo's GitHub release and is checksum-verified"
+note "install dumbtv home: open source, built from this tree, package tv.vinay.dumbtv"
+note "internet permission is only for a wallpaper you ask for; no ad ID"
 if [[ $SDK -lt 28 ]]; then
   note "take over HOME: Keeper (UsageStats + moveTaskToFront, no accessibility)"
 else
   note "take over HOME: accessibility service + alarm min_futurity=0"
 fi
-note "Amazon's launcher stays installed: hold HOME for Fire OS's menu, or Options > Open Amazon's home screen"
+note "Amazon's launcher stays installed: hold HOME for Fire OS's menu, or Home Settings > Exit to Amazon Home"
 if [[ $DRY_RUN == 1 ]]; then
-  note "[dry-run] ADB=$ADB ADB_SERIAL=$SERIAL launcher/install.sh"
+  note "[dry-run] ADB=$ADB ADB_SERIAL=$SERIAL launcher/install.sh --build"
   exit 0
 fi
 confirm "Replace the home screen on $SERIAL?" || die "cancelled"
 
-ADB=$ADB ADB_SERIAL=$SERIAL "$ROOT/launcher/install.sh" || die "launcher install failed (see above)"
+ADB=$ADB ADB_SERIAL=$SERIAL "$ROOT/launcher/install.sh" --build || die "launcher install failed (see above)"
 
 for _ in 1 2 3 4 5 6 7 8 9 10; do
   sleep 1

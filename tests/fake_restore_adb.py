@@ -39,7 +39,7 @@ def answer(how):
 
 
 if (d / 'answered').exists() and cmd == 'dumpsys window':
-    print('  mCurrentFocus=Window{1 u0 tv.dumbtv.home/tv.dumbtv.home.Home}')
+    print('  mCurrentFocus=Window{1 u0 tv.vinay.dumbtv/tv.vinay.dumbtv.Home}')
 elif cmd.startswith('uiautomator dump'):
     print('<node resource-id="com.android.backupconfirm:id/button_allow" class="android.widget.Button" '
           'clickable="true" bounds="[960,984][1920,1080]" />')

@@ -36,7 +36,7 @@ note "third-party   $(dev 'pm list packages -3' | sed 's/package://' | grep -vc 
 note "home screen   $(front_activity | awk -F/ '{print $1}')"
 note "free ram      $(dev 'dumpsys meminfo' | sed -n 's/.*Free RAM: *\([0-9,]*K\).*/\1/p' | head -1)"
 note "dns filter    $(present dnsfilter.android && echo installed || echo 'not installed')"
-note "launcher      $(present tv.dumbtv.home && echo 'dumbtv home installed' || echo 'not installed')"
+note "launcher      $(present tv.vinay.dumbtv && echo 'dumbtv home installed' || echo 'not installed')"
 
 step "the pass would"
 note "disable $(cleanup_list | wc -l | tr -d ' ') Amazon packages, minus anything in never-disable.txt"
@@ -49,7 +49,7 @@ if [[ $DNSFILTER == 1 ]]; then
   note "install a DNS filter that blocks Amazon telemetry$([[ $ALEXA == 0 ]] && printf ', Alexa') and the OTA servers"
 fi
 if [[ $LAUNCHER == 1 ]]; then
-  note "replace the home screen with dumbtv home (this repo's own launcher, no internet access)"
+  note "replace the home screen with dumbtv home (this repo's own launcher)"
 fi
 note "reboot twice (about 5 minutes)"
 

@@ -113,8 +113,8 @@ If it was removed with `--remove`, the only way back is the Amazon Appstore
 (YouTube, free). That is the one step in this repo that is not undoable from the
 command line — everything else is.
 
-Then set the dumbtv home app order back in Options, or edit
-`/sdcard/Android/data/tv.dumbtv.home/files/home.conf`.
+Then put the apps back in order from the tile menu (Hold OK › Move), or edit
+`/sdcard/Android/data/tv.vinay.dumbtv/files/home.conf`.
 
 ## What this does not do
 

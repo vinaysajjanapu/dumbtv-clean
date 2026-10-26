@@ -1,18 +1,23 @@
 #!/usr/bin/env bash
 # Installs dumbtv home on the TV and gives it the HOME button.
-#   ./launcher/install.sh            download the release APK (checksum-verified), install, take over HOME
-#   ./launcher/install.sh --build    build from source instead (needs a JDK and the Android SDK)
+#   ./launcher/install.sh            build from source, install, take over HOME
+#   ./launcher/install.sh --build    same
 #   ./launcher/install.sh --undo     hand HOME back to Amazon's launcher
 # Pick the device with ADB_SERIAL when more than one is connected.
+# Needs a JDK and the Android SDK. See launcher/README.md.
+# The original project's release APK is a different app (tv.dumbtv.home). This tree
+# does not install it.
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-# shellcheck disable=SC1091
-source version.env
-APK_URL=https://github.com/humblemuzzu/dumbtv/releases/download/launcher-v$VERSION/dumbtv-home.apk
-
-PKG=tv.dumbtv.home
+# Application id and Java package. The published dumbtv home (tv.dumbtv.home) is
+# signed with another key, so it cannot be updated in place. If it is still
+# installed, it is disabled after this one is up.
+PKG=tv.vinay.dumbtv
 GUARD=$PKG/$PKG.Guard
+LEGACY=tv.dumbtv.home
+# An earlier build of this fork used the new application id with the old class names.
+SPLIT=$PKG/$LEGACY.Guard
 OLD_GUARD=com.spocky.projengmenu/com.spocky.projengmenu.services.ProjectivyAccessibilityService
 ADB=${ADB:-adb}
 
@@ -22,10 +27,9 @@ installed() { sh_ pm path "$1" 2>/dev/null | grep -q '^package:'; }
 # shellcheck disable=SC1091
 source ../scripts/home.sh
 
-mode=release
+mode=build
 case ${1:-} in
-  "") ;;
-  --build) mode=build ;;
+  ""|--build) ;;
   --undo) mode=undo ;;
   *) echo "usage: $0 [--build | --undo]" >&2; exit 2 ;;
 esac
@@ -52,7 +56,7 @@ set_guard() {
   local cur
   orig=$(sh_ settings get secure enabled_accessibility_services | tr -d '\r')
   [[ $orig == null ]] && orig=
-  cur=$(printf '%s' "$orig" | tr ':' '\n' | { grep -vxF -e "$GUARD" -e "$PKG/.Guard" -e "$OLD_GUARD" -e '' || true; } | paste -sd: -)
+  cur=$(printf '%s' "$orig" | tr ':' '\n' | { grep -vxF -e "$GUARD" -e "$PKG/.Guard" -e "$SPLIT" -e "$LEGACY/.Guard" -e "$LEGACY/$LEGACY.Guard" -e "$OLD_GUARD" -e '' || true; } | paste -sd: -)
   if [[ -n ${1:-} ]]; then cur=${cur:+$cur:}$1; fi
   # Clearing first makes the accessibility manager rebind a service whose process died. The
   # other services live only in $orig meanwhile: if this is cut short, the trap puts them back.
@@ -67,11 +71,6 @@ set_guard() {
     put_secure accessibility_enabled 0
   fi
   trap - EXIT INT TERM
-}
-
-sha256() {
-  if command -v sha256sum >/dev/null; then sha256sum "$1" | awk '{print $1}'
-  else shasum -a 256 "$1" | awk '{print $1}'; fi
 }
 
 if [[ $mode == undo ]]; then
@@ -96,41 +95,12 @@ install_apk() {
   out=$(adb_ install -r "$APK" 2>&1 | grep -m1 -E 'Success|Failure|failed' || true)
 }
 
-if [[ $mode == build ]]; then
-  build_apk
-else
-  mkdir -p build
-  APK=build/dumbtv-home-$VERSION.apk
-  if [[ ! -f $APK || $(sha256 "$APK") != "$APK_SHA256" ]]; then
-    echo "downloading dumbtv home $VERSION"
-    # --retry-all-errors: GitHub's release CDN sometimes resets the first connection.
-    curl -fL --retry 4 --retry-delay 3 --retry-all-errors --connect-timeout 20 --progress-bar \
-      -o "$APK.part" "$APK_URL" || { echo "error: could not download $APK_URL" >&2; exit 1; }
-    mv "$APK.part" "$APK"
-  fi
-  got=$(sha256 "$APK")
-  [[ $got == "$APK_SHA256" ]] || { echo "error: checksum mismatch for $APK (got $got) — not installing" >&2; exit 1; }
-  echo "checksum ok"
-fi
-
+build_apk
 install_apk
-# Releases up to 1.1 were built for Android 9+. On Fire OS 6 (sdk 25) fall back to a
-# source build; the default build already targets sdk 25.
-if [[ $mode == release && $out == *INSTALL_FAILED_OLDER_SDK* ]]; then
-  echo "release $VERSION needs a newer Android than sdk $dev_sdk, building from source"
-  mode=build
-  build_apk
-  install_apk
-fi
 case $out in
   *Success*) ;;
   *INSTALL_FAILED_UPDATE_INCOMPATIBLE*)
-    echo "error: the installed dumbtv home was signed with a different key (release vs your own build)." >&2
-    if [[ $mode == release ]]; then
-      echo "  it is probably your own build: run ./launcher/install.sh --build instead" >&2
-    else
-      echo "  it is probably the release: this build's key cannot update it." >&2
-    fi
+    echo "error: $PKG is already installed and was signed with a different key." >&2
     echo "  Replacing it means uninstalling it (adb uninstall $PKG), which deletes its settings;" >&2
     echo "  on Fire OS 8 they cannot be backed up over adb first." >&2
     exit 1 ;;
@@ -164,6 +134,10 @@ if [[ $dev_sdk -lt 28 ]]; then
   elif [[ $front != *"$PKG"* ]]; then
     echo "error: dumbtv home is installed but not in front ($front)" >&2
     exit 1
+  fi
+  if installed "$LEGACY"; then
+    sh_ pm disable-user --user 0 "$LEGACY" >/dev/null 2>&1 || true
+    echo "note: $LEGACY is disabled so HOME stays on $PKG. Its settings are still on the TV."
   fi
   echo "home: dumbtv (Keeper, no accessibility; sdk $dev_sdk)"
   exit 0
@@ -203,5 +177,12 @@ if installed com.spocky.projengmenu; then
 fi
 
 sleep 2
+# The published tv.dumbtv.home build is a different signature, so it cannot take this
+# update. Leave it installed and disabled: that keeps its settings and stops it opening
+# on HOME. adb shell pm enable --user 0 tv.dumbtv.home turns it back on.
+if installed "$LEGACY"; then
+  sh_ pm disable-user --user 0 "$LEGACY" >/dev/null 2>&1 || true
+  echo "note: $LEGACY is disabled so HOME stays on $PKG. Its settings are still on the TV."
+fi
 printf 'accessibility: %s\n' "$(sh_ settings get secure enabled_accessibility_services)"
 printf 'front window:  %s\n' "$(sh_ dumpsys window | grep -m1 mCurrentFocus | sed 's/.* u0 //; s/}$//')"

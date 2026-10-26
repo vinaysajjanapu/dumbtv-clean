@@ -1,8 +1,6 @@
-package tv.dumbtv.home;
+package tv.vinay.dumbtv;
 
-import java.util.Arrays;
-
-/** Host-side checks for Options › Memory meter, without a device or test framework. */
+/** Host-side checks for the memory-meter arithmetic, without a device or test framework. */
 public final class MeterTest {
     private static void check(boolean ok, String name) {
         if (!ok) throw new AssertionError(name);
@@ -22,9 +20,6 @@ public final class MeterTest {
         check(Meter.low(false, 100 * mb, 1000 * mb), "under 15% free is low");
         check(!Meter.low(false, 247 * mb, 903 * mb), "27% free is not low");
         check(!Meter.low(false, 0, 0), "unknown total is not low");
-
-        check("off".equals(Config.MEMORY.fallback), "hidden unless turned on");
-        check(Arrays.asList(Config.CHOICES).contains(Config.MEMORY), "Memory meter shows in Options");
         System.out.println("MeterTest passed");
     }
 }

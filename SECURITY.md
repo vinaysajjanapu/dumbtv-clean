@@ -1,8 +1,9 @@
 # Security
 
-dumbtv runs commands on someone's television, and dumbtv home runs as their home
-screen. If you find a way either could harm a TV, leak data, or be abused by
-someone else on the network, report it privately.
+Dumb TV Clean runs commands on someone's television, and its home screen runs as
+their home screen. Vinay Sajjanapu maintains this repository. If you find a way
+either could harm a TV, leak data, or be abused by someone else on the network,
+report it privately.
 
 ## How to report
 
@@ -15,7 +16,7 @@ Please do not open a public issue for a security problem until it is fixed.
 ## In scope
 
 - The scripts in `scripts/` and `launcher/`
-- dumbtv home, the APK published in this repository's releases
+- Dumb TV Clean, the APK published in this repository's releases
 - The blocklists in `data/blocklists/`
 
 personalDNSfilter, SmartTube and HaGeZi's lists are separate projects; report

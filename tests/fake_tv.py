@@ -130,4 +130,4 @@ elif words[:2] == ['dumpsys', 'package']:
 elif command == 'ps -A -o NAME':
     print('NAME')
 elif command == 'dumpsys activity activities':
-    print('  mResumedActivity: ActivityRecord{1 u0 tv.dumbtv.home/.Home t1}')
+    print('  mResumedActivity: ActivityRecord{1 u0 tv.vinay.dumbtv/.Home t1}')

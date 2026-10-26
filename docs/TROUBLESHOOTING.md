@@ -28,7 +28,7 @@ what makes Android bind it.
 ### `verify.sh` says the home hook is enabled but not bound
 
 Enabled is a setting; bound means the service is actually running. `verify.sh`
-reads `dumpsys accessibility` and only passes when "dumbtv home button" is in the
+reads `dumpsys accessibility` and only passes when "Dumb TV Clean" is in the
 current user's bound services. Run `./scripts/launcher.sh -y`.
 
 On a TCL G08 the service stayed unbound because TCL's `TclAppBoot` refused it
@@ -44,6 +44,13 @@ with `adb shell settings get global alarm_manager_constants` (Fire OS 7 and 8), 
 Android 12 or later, then run `./scripts/launcher.sh -y`. With it set, HOME shows
 about 0.3 s of black. Fire OS 6 does not use this setting: its Keeper moves the
 home screen to the front without an alarm.
+
+### The Appstore flashes and dumbtv home comes straight back
+
+The store opens Amazon's home and draws itself there. The home hook replaces that
+window. Current builds pause the hook when the Appstore is opened, the same as
+Home Settings › Exit to Amazon Home. Open any other app, then press Home. An older
+build still bounces; install the current one with `./launcher/install.sh`.
 
 ### Settings bounces back to the home screen
 
@@ -62,15 +69,15 @@ That is Android's `FallbackHome` while the system starts. Nothing is broken.
 ### HOME from an HDMI input takes about five seconds
 
 On Fire TV Edition televisions Amazon's Live TV app holds the display while it
-closes. Nothing outside that app can shorten it. Open inputs with the launcher's
-own screen instead (Options › Open inputs with › Automatic or dumbtv home): it
-releases the picture about 0.4 s after HOME.
+closes. Nothing outside that app can shorten it. Open the input from dumbtv instead
+(Home Settings › Inputs › Open Each Input In › Automatic or Dumb TV Clean): it releases the
+picture about 0.4 s after HOME.
 
 ### An HDMI tile opens Live TV settings instead of the input
 
 Amazon's Live TV app claims every input and then shows its settings or a channel
-scan. Set Options › Open inputs with › **Automatic** (the default from launcher
-1.2), which uses the launcher's own input screen when that happens.
+scan. Set Home Settings › Inputs › Open Each Input In › Automatic, which uses the launcher's
+own input screen when that happens.
 
 ## DNS filter
 
@@ -241,11 +248,11 @@ level and switch to `data/fireos6/` on their own.
   deletes into one call (`input keyevent 67 67 67`), and close the keyboard with
   BACK before tapping another field.
 - **The launcher's own folder is closed to adb too,** so `home.conf` and the
-  wallpapers cannot be pushed to `/sdcard/Android/data/tv.dumbtv.home/files/`.
-  Write them to `/sdcard/Android/media/tv.dumbtv.home/` instead: the launcher reads
+  wallpapers cannot be pushed to `/sdcard/Android/data/tv.vinay.dumbtv/files/`.
+  Write them to `/sdcard/Android/media/tv.vinay.dumbtv/` instead: the launcher reads
   both, wallpapers in name order, and a settings file pushed to the media folder is
   applied once, then remembered, so it does not overwrite a later change made in
-  Options. [launcher/README.md](../launcher/README.md) has the commands.
+  Home Settings. [launcher/README.md](../launcher/README.md) has the commands.
 - **HOME stays on Amazon's home with launcher 1.1.** Android 11 needs the
   launcher to have a visible window first; 1.2 waits for its cover window. Update
   with `./launcher/install.sh`.

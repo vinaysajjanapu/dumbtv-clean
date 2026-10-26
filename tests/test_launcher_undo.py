@@ -11,7 +11,10 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
-GUARD = "tv.dumbtv.home/tv.dumbtv.home.Guard"
+PKG = "tv.vinay.dumbtv"
+GUARD = f"{PKG}/{PKG}.Guard"
+LEGACY = "tv.dumbtv.home/tv.dumbtv.home.Guard"
+SPLIT = "tv.vinay.dumbtv/tv.dumbtv.home.Guard"
 
 
 class LauncherUndoTest(unittest.TestCase):
@@ -19,7 +22,7 @@ class LauncherUndoTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             tmp = Path(tmp)
             state = tmp / "state.json"
-            state.write_text(json.dumps({"packages": {"tv.dumbtv.home": {"system": False, "enabled": True}},
+            state.write_text(json.dumps({"packages": {PKG: {"system": False, "enabled": True}},
                                          "settings": settings, "sdk": sdk}))
             log = tmp / "commands.log"
             log.touch()
@@ -44,8 +47,14 @@ class LauncherUndoTest(unittest.TestCase):
 
     def test_the_doze_exemption_goes_too(self):
         commands, settings = self.undo({"secure/enabled_accessibility_services": GUARD})
-        self.assertIn("dumpsys deviceidle whitelist -tv.dumbtv.home", commands)
+        self.assertIn(f"dumpsys deviceidle whitelist -{PKG}", commands)
         self.assertNotIn(GUARD, settings.get("secure/enabled_accessibility_services", ""))
+
+    def test_old_package_guards_are_removed(self):
+        _, settings = self.undo({"secure/enabled_accessibility_services":
+                                 f"example.reader/.Service:{LEGACY}:{SPLIT}:{GUARD}"})
+        left = settings.get("secure/enabled_accessibility_services", "")
+        self.assertEqual(left, "example.reader/.Service")
 
     def test_other_accessibility_services_are_kept(self):
         _, settings = self.undo({"secure/enabled_accessibility_services": f"example.reader/.Service:{GUARD}"})

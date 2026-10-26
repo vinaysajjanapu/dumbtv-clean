@@ -65,7 +65,7 @@ if [[ $LAUNCHER == 0 ]]; then
   printf '%-10s %-38s %s\n' skip home "LAUNCHER=0, not checked"
 elif [[ $SDK -lt 28 ]]; then
   # Fire OS 6: the Keeper, not the accessibility service, owns HOME.
-  keeper=$(dev 'dumpsys activity services tv.dumbtv.home' | grep -c 'isForeground=true' || true)
+  keeper=$(dev 'dumpsys activity services tv.vinay.dumbtv' | grep -c 'isForeground=true' || true)
   if [[ ${keeper:-0} -gt 0 ]]; then
     printf '%-10s %-38s %s\n' ok home "Keeper armed, front is ${home:-unknown}"
   else
@@ -82,7 +82,7 @@ else
       a11y=$(dev "settings --user $current_user get secure enabled_accessibility_services" | tr -d '\r')
       enabled=$(dev "settings --user $current_user get secure accessibility_enabled" | tr -d '\r')
       case :$a11y: in
-        *:tv.dumbtv.home/.Guard:*|*:tv.dumbtv.home/tv.dumbtv.home.Guard:*)
+        *:tv.vinay.dumbtv/tv.vinay.dumbtv.Guard:*|*:tv.vinay.dumbtv/.Guard:*)
           if [[ $enabled == 1 ]]; then
             if dump=$(dev 'dumpsys accessibility'); then
               printf '%s\n' "$dump" | guard_bound "$current_user"
@@ -116,10 +116,10 @@ else
   dev 'am start -a android.intent.action.MAIN -c android.intent.category.LEANBACK_SETTINGS' >/dev/null 2>&1 || true
   for i in 1 2 3 4 5 6; do
     away=$(front_activity)
-    [[ -n $away && $away != tv.dumbtv.home/* ]] && break
+    [[ -n $away && $away != tv.vinay.dumbtv/* ]] && break
     sleep 1
   done
-  if [[ -z $away || $away == tv.dumbtv.home/* ]]; then
+  if [[ -z $away || $away == tv.vinay.dumbtv/* ]]; then
     printf '%-10s %-38s %s\n' skip home-key "could not leave the home screen; press HOME to check"
   else
     dev 'input keyevent KEYCODE_HOME' >/dev/null 2>&1 || true
@@ -127,10 +127,10 @@ else
     for i in 1 2 3 4 5 6 7 8; do
       sleep 1
       landed=$(front_activity)
-      [[ $landed == tv.dumbtv.home/* ]] && break
+      [[ $landed == tv.vinay.dumbtv/* ]] && break
     done
     case $landed in
-      tv.dumbtv.home/*) printf '%-10s %-38s %s\n' ok home-key "HOME lands on $landed" ;;
+      tv.vinay.dumbtv/*) printf '%-10s %-38s %s\n' ok home-key "HOME lands on $landed" ;;
       *) printf '%-10s %-38s %s\n' FAIL home-key "HOME lands on ${landed:-unknown}"; fail=1 ;;
     esac
   fi

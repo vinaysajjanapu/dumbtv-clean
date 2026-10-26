@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SLEEPY_ADB = r'''#!/usr/bin/env bash
 case "$*" in
   *"input keyevent KEYCODE_WAKEUP"*) [[ -f "$IGNORES_WAKE" ]] || touch "$AWAKE"; echo "$*" >> "$LOG" ;;
-  *"am start -W -n tv.dumbtv.home/.Home"*) echo "$*" >> "$LOG"
+  *"am start -W -n tv.vinay.dumbtv/.Home"*) echo "$*" >> "$LOG"
      while [[ ! -f "$AWAKE" ]]; do sleep 0.2; done; echo "Status: ok" ;;
   *) exit 92 ;;
 esac
@@ -38,7 +38,7 @@ class StartHomeTest(unittest.TestCase):
             env = dict(os.environ, AWAKE=str(tmp / "awake"), IGNORES_WAKE=str(tmp / "ignores"),
                        LOG=str(tmp / "log"))
             script = ('sh_() { "$ADB" shell "$@" </dev/null; }; ADB=$1; source "$2"; '
-                      'start_home tv.dumbtv.home/.Home "$3"; echo "exit $?"')
+                      'start_home tv.vinay.dumbtv/.Home "$3"; echo "exit $?"')
             began = time.monotonic()
             result = subprocess.run(["bash", "-c", script, "bash", str(adb),
                                      str(ROOT / "scripts" / "home.sh"), bound],

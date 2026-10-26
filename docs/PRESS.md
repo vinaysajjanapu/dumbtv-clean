@@ -1,5 +1,9 @@
 # dumbtv in the press
 
+These articles are about the original [dumbtv](https://github.com/humblemuzzu/dumbtv),
+started by [Muzzammil](https://x.com/DevMuzzammil). This repository is Dumb TV Clean,
+by [Vinay Sajjanapu](https://github.com/vinaysajjanapu).
+
 dumbtv launched on 19 October 2026 with [a post on X](https://x.com/DevMuzzammil/status/2111912547318395338)
 that followed [the one before it](https://x.com/DevMuzzammil/status/2111595814099591535).
 Within days it was covered in more than 100 articles across about 25 countries.

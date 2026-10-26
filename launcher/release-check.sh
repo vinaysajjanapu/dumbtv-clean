@@ -34,8 +34,8 @@ echo "version $VERSION"
 
 [[ $VERSION =~ ^[0-9]+\.[0-9]+$ ]] || bad "VERSION '$VERSION' is not <major>.<minor>"
 [[ $APK_SHA256 =~ ^[0-9a-f]{64}$ ]] || bad "APK_SHA256 is not a 64-char lowercase hex digest"
-grep -q 'version.env' install.sh || bad "install.sh does not source version.env"
-grep -q 'version.env' build.sh   || bad "build.sh does not source version.env"
+grep -q 'version.env' build.sh || bad "build.sh does not source version.env"
+grep -q 'PKG=tv.vinay.dumbtv' install.sh || bad "install.sh application id is not tv.vinay.dumbtv"
 
 [[ $mode == --manifest ]] && { [[ $fail == 0 ]] && echo "manifest consistent"; exit $fail; }
 

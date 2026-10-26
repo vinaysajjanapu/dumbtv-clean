@@ -120,20 +120,20 @@ only and reads no screen content.
 **Fire OS 6: a foreground service, `Keeper`.** Fire OS 6.7 refuses third-party
 accessibility services. `Keeper` reads the foreground app from UsageStats and calls
 `moveTaskToFront` when Amazon's home appears. That is not an activity launch, so
-the 5 s delay does not apply. It is the only reason the launcher asks for any
-permission at all, and those three permissions are capped at Android 8.1, so Fire
-OS 7 and 8 see none.
+the 5 s delay does not apply. Those three permissions are capped at Android 8.1,
+so Fire OS 7 and 8 do not get them. On those versions the only permission is
+INTERNET, used to fetch a wallpaper you asked for.
 
-Holding HOME still opens Fire OS's quick menu, and the launcher's Options can open
+Holding HOME still opens Fire OS's quick menu, and Home Settings can open
 Amazon's home on purpose.
 
 ### HDMI inputs
 
-An input tile hands Android's passthrough URI to the TV's own app, unless that app
-is Amazon's Live TV, which claims every input and then shows its settings. In that
-case the launcher shows the input itself with Android's public `TvView`: it asks
-the TV's input service for a session and gives it the screen. Options › Open inputs
-with chooses between the two; **Automatic** is the default.
+The inputs row is hidden until Home Settings › Inputs › Inputs Row is Shown. An input
+tile then hands Android's passthrough URI to the TV's own app, unless that app is
+Amazon's Live TV, which claims every input and then shows its settings. In that
+case the launcher shows the input itself. Home Settings › Inputs › Open Each Input In
+chooses between the two; Automatic is the default.
 
 ## Not used, and why
 

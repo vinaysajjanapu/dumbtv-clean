@@ -5,9 +5,8 @@ script cannot read from the TV: where Developer Options is, where the IP address
 is shown, which dialogs needed a person, and what surprised them. The next owner
 of the same model, or their coding agent, starts from there.
 
-The list of devices, with what worked on each, is in the
-[README](../README.md#tested-on) and on [dumbtv.org/tv](https://dumbtv.org/tv),
-which picks up a new file within a day of it being merged.
+The list of devices, with what worked on each, lives in this repository.
+Dumb TV Clean is maintained by [Vinay Sajjanapu](https://github.com/vinaysajjanapu).
 
 ## Adding your TV
 

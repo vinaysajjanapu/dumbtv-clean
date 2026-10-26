@@ -4,8 +4,8 @@
 #   MIN_SDK=25 (default)  one APK for Fire OS 6, 7 and 8: the published release. Compiling
 #                         against android-25 makes javac reject any android.* API Fire OS 6
 #                         lacks; java.* calls are checked against JDK 8 by --release 8, so keep
-#                         them to what Android 7.1 has. Fire OS 7/8 see no permissions: the
-#                         Keeper's three are capped at maxSdkVersion 27.
+#                         them to what Android 7.1 has. The Keeper's three permissions are
+#                         capped at maxSdkVersion 27. INTERNET is the wallpaper fetch.
 #   MIN_SDK=28            Android 9+ only, as releases up to 1.1 were
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -66,7 +66,7 @@ mkdir -p "$WORK/gen" "$WORK/classes" build
 "$BT/aapt2" link -I "$JAR" --manifest AndroidManifest.xml "$WORK/res.zip" \
   --min-sdk-version "$MIN_SDK" --target-sdk-version 28 \
   --version-code "$VERSION_CODE" --version-name "$VERSION_NAME" \
-  --java "$WORK/gen" -o "$WORK/app.apk"
+  --custom-package tv.vinay.dumbtv --java "$WORK/gen" -o "$WORK/app.apk"
 
 find src "$WORK/gen" -name '*.java' > "$WORK/sources.txt"
 "$JAVA_HOME/bin/javac" --release 8 -Xlint:all -Xlint:-options -Werror -encoding UTF-8 \
